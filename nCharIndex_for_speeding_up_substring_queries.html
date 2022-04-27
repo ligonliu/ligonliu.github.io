@@ -195,14 +195,30 @@
 <p>Instead of intersecting their corresponding row id sets, we union these sets to directly produce the result: {0,2,4}, without having to invoke the RDBMS query to confirm the have substring “at”.</p>
 
 <h2 id="implementation-and-performance">Implementation and Performance</h2>
+
+<p>For detailed analysis, see <a href="nCharIndex_performance_experiment.html">this separate page</a></p>
+
+<h3 id="querying-1">Querying</h3>
 <p>The published code is implemented in C++, with rocksdb as key-value storage backend for storing the mapping from length-n substrings to row id sets, and “hps” library for serialization. MySQLx C++ API is called for querying the local MySQL server.</p>
 
 <p>The performance improvement is very significant, with affordable cost of index space.</p>
 
 <p>Performance of raw RDBMS query vs ncharIndex-assisted query depend primarily on the cardinality of result. The acceleration ratio is higher for match patterns with fewer occurrences in the string database. The length of match patterns also matters to a lesser degree.</p>
 
-<p>I tested the index query speed using imdb database’s movie_info table as a surrogate to the production database, and used top-1000 frequent words from a English language statistics website. Acceleration is significant at about 300x. The results are discussed in another blog post.</p>
+<p>I tested the index query speed using imdb database’s movie_info table as a surrogate to the production database, and used top-1000 frequent words from a English language statistics website. Acceleration is significant at about 300x.</p>
 
+<h3 id="building">Building</h3>
+
+<p>If the index is a N-char index(optimal value of N is 2 or 3 depending on the text), for a text database with n rows and average text length m and alphabet size A, there will be:</p>
+<ul>
+  <li>A<sup>N</sup> index entries</li>
+  <li>Average m-N+1 substrings for each row (with possible duplicates)</li>
+</ul>
+
+<p>Without considering the duplicates, theoretically the time and space usage of index building is O(A<sup>N</sup>+nm), however, simulated data tests reveal that N=3 costs 2-6 times more time and 2-3 times more space than N=2.
+As N=2 is sufficient for most text databases, I recommend use N=2 unless a higher N is proven more effective.</p>
+
+<p>For comparison of index build and access performance, I also incompletely implemented another version utilizing <strong><a href="https://github.com/LLNL/metall">LLNL metall</a></strong> as the persistence backend. LLNL metall is a memory allocator library that allocates on memory mapped(mmap) files, with interface for boost template containers. The performance advantage to the rocksdb version is significant.</p>
 
   </div><a class="u-url" href="/nCharIndex_for_speeding_up_substring_queries.html" hidden></a>
 </article>
