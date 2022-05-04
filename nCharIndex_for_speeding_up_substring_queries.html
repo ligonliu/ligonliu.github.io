@@ -14,11 +14,11 @@
 <meta property="og:url" content="http://localhost:4000/nCharIndex_for_speeding_up_substring_queries.html" />
 <meta property="og:site_name" content="guy with a dog (under construction)" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2019-12-14T10:21:38-06:00" />
+<meta property="article:published_time" content="2020-01-10T10:21:38-06:00" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="nCharIndex for speeding up SQL substring match queries" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Ligon Liu"},"dateModified":"2019-12-14T10:21:38-06:00","datePublished":"2019-12-14T10:21:38-06:00","description":"index with short(2-3) substrings can greatly reduce search domain of substring matches for SQL LIKE queries, resulting in 150-300x acceleration","headline":"nCharIndex for speeding up SQL substring match queries","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/nCharIndex_for_speeding_up_substring_queries.html"},"url":"http://localhost:4000/nCharIndex_for_speeding_up_substring_queries.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Ligon Liu"},"dateModified":"2020-01-10T10:21:38-06:00","datePublished":"2020-01-10T10:21:38-06:00","description":"index with short(2-3) substrings can greatly reduce search domain of substring matches for SQL LIKE queries, resulting in 150-300x acceleration","headline":"nCharIndex for speeding up SQL substring match queries","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/nCharIndex_for_speeding_up_substring_queries.html"},"url":"http://localhost:4000/nCharIndex_for_speeding_up_substring_queries.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="guy with a dog (under construction)" /></head>
 <body><header class="site-header" role="banner">
@@ -43,7 +43,7 @@
   <header class="post-header">
     <h1 class="post-title p-name" itemprop="name headline">nCharIndex for speeding up SQL substring match queries</h1>
     <p class="post-meta">
-      <time class="dt-published" datetime="2019-12-14T10:21:38-06:00" itemprop="datePublished"></time></p>
+      <time class="dt-published" datetime="2020-01-10T10:21:38-06:00" itemprop="datePublished"></time></p>
   </header>
 
   <div class="post-content e-content" itemprop="articleBody">
@@ -196,8 +196,6 @@
 
 <h2 id="implementation-and-performance">Implementation and Performance</h2>
 
-<p>For detailed analysis, see <a href="nCharIndex_performance_experiment.html">this separate page</a></p>
-
 <h3 id="querying-1">Querying</h3>
 <p>The published code is implemented in C++, with rocksdb as key-value storage backend for storing the mapping from length-n substrings to row id sets, and “hps” library for serialization. MySQLx C++ API is called for querying the local MySQL server.</p>
 
@@ -215,10 +213,13 @@
   <li>Average m-N+1 substrings for each row (with possible duplicates)</li>
 </ul>
 
-<p>Without considering the duplicates, theoretically the time and space usage of index building is O(A<sup>N</sup>+nm), however, simulated data tests reveal that N=3 costs 2-6 times more time and 2-3 times more space than N=2.
-As N=2 is sufficient for most text databases, I recommend use N=2 unless a higher N is proven more effective.</p>
+<p>Without considering the duplicates, theoretically the time and space usage of index building is O(A<sup>N</sup>+nm), however, simulated data tests reveal that N=3 costs 2-6 times more time and 2-3 times more space than N=2.</p>
+
+<p>As N=2 is sufficient for most text databases, I recommend use N=2 unless a higher N is proven more effective.</p>
 
 <p>For comparison of index build and access performance, I also incompletely implemented another version utilizing <strong><a href="https://github.com/LLNL/metall">LLNL metall</a></strong> as the persistence backend. LLNL metall is a memory allocator library that allocates on memory mapped(mmap) files, with interface for boost template containers. The performance advantage to the rocksdb version is significant.</p>
+
+<p>See detailed analysis, on <a href="nCharIndex_performance_experiment.html"><strong>this page</strong></a></p>
 
   </div><a class="u-url" href="/nCharIndex_for_speeding_up_substring_queries.html" hidden></a>
 </article>
