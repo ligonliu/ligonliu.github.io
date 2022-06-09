@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-05-05T17:36:24-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">guy with a dog (under construction)</title><subtitle>personal blog on self replication, digital twin, simulation, database, offgrid, sustainability etc</subtitle><author><name>Ligon Liu</name></author><entry><title type="html">Introduction to my explorations of offgrid living</title><link href="http://localhost:4000/introduction_to_my_explorations_of_offgrid_living.html" rel="alternate" type="text/html" title="Introduction to my explorations of offgrid living" /><published>2021-12-01T11:21:49-06:00</published><updated>2021-12-01T11:21:49-06:00</updated><id>http://localhost:4000/introduction_to_my_explorations_of_offgrid_living</id><content type="html" xml:base="http://localhost:4000/introduction_to_my_explorations_of_offgrid_living.html"><![CDATA[<p>offgrid living, which used to be arduous and uncomfortable, is worth reviving with modern technology.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-06-09T02:50:00-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">the dogs man (under construction)</title><subtitle>personal blog on self replication, digital twin, simulation, database, offgrid, sustainability etc</subtitle><author><name>Ligon Liu</name></author><entry><title type="html">Introduction to my explorations of offgrid living</title><link href="http://localhost:4000/introduction_to_my_explorations_of_offgrid_living.html" rel="alternate" type="text/html" title="Introduction to my explorations of offgrid living" /><published>2021-12-01T11:21:49-06:00</published><updated>2021-12-01T11:21:49-06:00</updated><id>http://localhost:4000/introduction_to_my_explorations_of_offgrid_living</id><content type="html" xml:base="http://localhost:4000/introduction_to_my_explorations_of_offgrid_living.html"><![CDATA[<p>offgrid living, which used to be arduous and uncomfortable, is worth reviving with modern technology.</p>
 
 <p>Despite urbanization being the proven way to economic prosperity and life quality, it has hit bottlenecks in almost all the developed world.</p>
 
@@ -55,7 +55,74 @@
   <li>Mojave Desert</li>
   <li>Saskatchewan Priaries</li>
   <li>Small van/RV on urban lot</li>
-</ul>]]></content><author><name>Ligon Liu</name></author><category term="Off-grid" /><summary type="html"><![CDATA[offgrid living, which used to be arduous and uncomfortable, is worth reviving with modern technology.]]></summary></entry><entry><title type="html">nCharIndex for speeding up SQL substring match queries</title><link href="http://localhost:4000/nCharIndex_for_speeding_up_substring_queries.html" rel="alternate" type="text/html" title="nCharIndex for speeding up SQL substring match queries" /><published>2020-01-10T10:21:38-06:00</published><updated>2020-01-10T10:21:38-06:00</updated><id>http://localhost:4000/nCharIndex_for_speeding_up_substring_queries</id><content type="html" xml:base="http://localhost:4000/nCharIndex_for_speeding_up_substring_queries.html"><![CDATA[<p>index with short(2-3) substrings can greatly reduce search domain of substring matches for SQL LIKE queries, resulting in 150-300x acceleration</p>
+</ul>]]></content><author><name>Ligon Liu</name></author><category term="Off-grid" /><summary type="html"><![CDATA[offgrid living, which used to be arduous and uncomfortable, is worth reviving with modern technology.]]></summary></entry><entry><title type="html">Serving tastier coffee for food vendors</title><link href="http://localhost:4000/serving_tastier_coffee_for_restaurants.html" rel="alternate" type="text/html" title="Serving tastier coffee for food vendors" /><published>2021-12-01T11:21:49-06:00</published><updated>2021-12-01T11:21:49-06:00</updated><id>http://localhost:4000/serving_tastier_coffee_for_restaurants</id><content type="html" xml:base="http://localhost:4000/serving_tastier_coffee_for_restaurants.html"><![CDATA[<p>serving tasty coffee in commercial settings by mixing chilled airtight concentrate with water.</p>
+
+<p>In coffee shops, fast food restaurants and gas stations, coffee is usually served by dripping a big kettle with a commercial-sized coffee machine, kept hot and served to upcoming customer by cups.</p>
+
+<p>Whether kept hot or not, the coffee loses flavor soon after being brewed, resulting in either degraded taste or waste of coffee.</p>
+
+<p>As a coffee enthusiastic, I developed a better way of commercially serving coffee, inspired by discussion with a friend who is a coffee shop barista.</p>
+
+<h2 id="the-method">The method</h2>
+
+<p>brew (-&gt; chill) -&gt; filter -&gt; dilute</p>
+
+<h3 id="things">Things</h3>
+
+<ul>
+  <li>French press</li>
+  <li>thin wall aluminum bottle with cap</li>
+  <li>ice bucket, bottle can fully immerse in which</li>
+  <li>stainless mesh pour over filter</li>
+  <li>foil-spouted liquid pouch</li>
+  <li>spigot that fits the pouch</li>
+  <li>distilled water</li>
+  <li>Coffee ground or beans in airtight inert gas filled packets</li>
+</ul>
+
+<h3 id="procedure">Procedure</h3>
+
+<ul>
+  <li>
+    <p>Brew: instead of brewing “regular coffee”, use french press to brew a coffee concentrate as intense as espresso. Add 1 volume of <strong>distilled</strong> water per 1 volume of loose coffee ground. Cold brew(4°C water) for 6 hours, or hot brew(80°C) for 3 minutes.</p>
+  </li>
+  <li>
+    <p>Chill: If hot brew, transfer the hot concentrate into a clean thin wall aluminum bottle (soda/beer aluminum bottles can be reused), close the cap and immediately immerse the bottle in ice-water mixture. If the bottle is large, shake the bottle to assist convection inside bottle.</p>
+  </li>
+  <li>
+    <p>Filter: A french press will leave some fine solids in coffee. Filter them out with a stainless mesh pour over filter. Do not use paper filter because paper absorbs some flavor.</p>
+
+    <ul>
+      <li>
+        <p>Store the filtered concentrate away from light and air, e.g. in a foil-spouted liquid pouch. Screw in a spigot onto the pouch for dispensing.</p>
+      </li>
+      <li>
+        <p>The coffee concentrate is good for at least 24 hours.</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>Dilute: before serving to customers, dilute the concentrate with hot/cold water as hot/cold coffee. Concentrate:water 1:3 - 1:5</p>
+  </li>
+</ul>
+
+<h2 id="simple-chemistry-explanation">Simple chemistry explanation</h2>
+
+<p>Coffee flavor are natural antioxidants, i.e. active reducing agents. When it reacts with oxygen, the aroma is lost, and the taste become bitter and sour. Some flavor substances reacts with oxygen in dry air, others reacts with oxygen dissolved in water.</p>
+
+<p>Temperature, light and metal ions in water may accelerate these reactions.</p>
+
+<p>It’s why commercial coffee grounds are packed by individual inert gas filled bags, which prevent flavor from being oxidized.</p>
+
+<p>It’s why hot brewed coffee loses taste after a few hours, but cold brewed coffee lasts a bit longer.</p>
+
+<p>By storing the concentrate cold and airtight, the flavor last longer before serving.</p>
+
+<h2 id="automating-coffee-making-for-food-vendors">Automating coffee making for food vendors</h2>
+
+<p>This process involves more dedications than the traditional method, but it can be easily automated by <a href="https://control.com/technical-articles/a-look-at-high-precision-fluid-dispensing/">volumetric dispensing pumps</a> controlled by relays and a computer, to the level of unattended serving ready-to-drink coffee to customers.</p>
+
+<p>If interested, contact me for implementation.</p>]]></content><author><name>Ligon Liu</name></author><category term="Off-grid" /><summary type="html"><![CDATA[serving tasty coffee in commercial settings by mixing chilled airtight concentrate with water.]]></summary></entry><entry><title type="html">nCharIndex for speeding up SQL substring match queries</title><link href="http://localhost:4000/nCharIndex_for_speeding_up_substring_queries.html" rel="alternate" type="text/html" title="nCharIndex for speeding up SQL substring match queries" /><published>2020-01-10T10:21:38-06:00</published><updated>2020-01-10T10:21:38-06:00</updated><id>http://localhost:4000/nCharIndex_for_speeding_up_substring_queries</id><content type="html" xml:base="http://localhost:4000/nCharIndex_for_speeding_up_substring_queries.html"><![CDATA[<p>index with short(2-3) substrings can greatly reduce search domain of substring matches for SQL LIKE queries, resulting in 150-300x acceleration</p>
 
 <h2 id="background">Background</h2>
 <p>nCharIndex is my customized solution for a client’s string database that handles many partial match analytical queries like the following:</p>
