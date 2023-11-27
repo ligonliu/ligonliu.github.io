@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>On fairness of wireless channel allocation/contention schemes | the dogs man (under construction)</title>
+<meta name="generator" content="Jekyll v4.3.2" />
+<meta property="og:title" content="On fairness of wireless channel allocation/contention schemes" />
+<meta name="author" content="Ligon Liu" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="what does fairness mean in allocating channel to interfering nodes" />
+<meta property="og:description" content="what does fairness mean in allocating channel to interfering nodes" />
+<link rel="canonical" href="https://ligonliu.github.io/on_fairness_of_channel_allocation_contention_schemes.html" />
+<meta property="og:url" content="https://ligonliu.github.io/on_fairness_of_channel_allocation_contention_schemes.html" />
+<meta property="og:site_name" content="the dogs man (under construction)" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2012-04-28T00:00:00-05:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="On fairness of wireless channel allocation/contention schemes" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Ligon Liu"},"dateModified":"2012-04-28T00:00:00-05:00","datePublished":"2012-04-28T00:00:00-05:00","description":"what does fairness mean in allocating channel to interfering nodes","headline":"On fairness of wireless channel allocation/contention schemes","mainEntityOfPage":{"@type":"WebPage","@id":"https://ligonliu.github.io/on_fairness_of_channel_allocation_contention_schemes.html"},"url":"https://ligonliu.github.io/on_fairness_of_channel_allocation_contention_schemes.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://ligonliu.github.io/feed.xml" title="the dogs man (under construction)" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">the dogs man (under construction)</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="manifest" href="/images/site.webmanifest">
+<link rel="shortcut icon" href="/images/favicon.ico">
+
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">On fairness of wireless channel allocation/contention schemes</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2012-04-28T00:00:00-05:00" itemprop="datePublished"></time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    what does fairness mean in allocating channel to interfering nodes
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN" "http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="GENERATOR" content="LyX 2.3.6.1" />
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+<title>On fairness of a channel allocation or contention scheme</title>
+<style type='text/css'>
+/* Layout-provided Styles */
+h1.title {
+font-size: x-large;
+margin-bottom: 1ex;
+text-align: center;
+
+}
+h3.subsection_ {
+font-weight: bold;
+font-size: large;
+margin-top: 0.9ex;
+margin-bottom: 0.5ex;
+text-align: left;
+
+}
+div.standard {
+	margin-bottom: 2ex;
+}
+ul.itemize {
+margin-top: 0.7ex;
+margin-bottom: 0.7ex;
+margin-left: 3ex;
+text-align: left;
+
+}
+ol.enumerate {
+margin-top: 0.7ex;
+margin-bottom: 0.7ex;
+margin-left: 3ex;
+text-align: left;
+
+}
+
+
+</style>
+</head>
+<body dir="auto">
+<p>Please view this page in Firefox if math equation format is messed up</p>
+<h3 class="subsection_" id='magicparlabel-2'>Single channel allocation</h3>
+<div class="standard" id='magicparlabel-3'>suppose the set of all nodes who need to use a single channel resource is V, their interference graph is (V,E), E={(i,j)|i, j <math xmlns="http://www.w3.org/1998/Math/MathML">
+ <mrow>
+  <mrow><mo> &isin; </mo><mi>V</mi>
+  </mrow>
+ </mrow></math> using the same channel interfere with each other}</div>
+
+<ul class="itemize" id='magicparlabel-4'><li class="itemize_item">each valid allocation is a Maximal Independent Set (MaxIS) of (V,E), denoted here by lower case letter <math xmlns="http://www.w3.org/1998/Math/MathML">
+ <mrow><mi>s</mi>
+ </mrow></math>.</li>
+<li class="itemize_item">the set of all valid allocations of (V,E) to be denoted <math xmlns="http://www.w3.org/1998/Math/MathML">
+ <mrow><mi>S</mi>
+ </mrow></math> = <math xmlns="http://www.w3.org/1998/Math/MathML">
+ <mrow>
+  <mrow>{
+   <msub>
+    <mrow><mi>s</mi>
+    </mrow>
+    <mrow><mn>1</mn>
+    </mrow>
+   </msub><mo>,</mo>
+   <msub>
+    <mrow><mi>s</mi>
+    </mrow>
+    <mrow><mn>2</mn>
+    </mrow>
+   </msub><mn>...</mn>
+   <msub>
+    <mrow><mi>s</mi>
+    </mrow>
+    <mrow><mi>m</mi>
+    </mrow>
+   </msub>}
+  </mrow>
+ </mrow></math>.</li>
+<li class="itemize_item">a single channel allocation scheme has a probability mass function for a probability distribution on <math xmlns="http://www.w3.org/1998/Math/MathML">
+ <mrow><mi>S</mi>
+ </mrow></math>: <math xmlns="http://www.w3.org/1998/Math/MathML">
+ <mrow>
+  <mrow>
+   <mrow>
+    <msub>
+     <mrow><mi>p</mi>
+     </mrow>
+     <mrow><mn>1</mn>
+     </mrow>
+    </msub><mo>,</mo>
+    <msub>
+     <mrow><mi>p</mi>
+     </mrow>
+     <mrow><mn>2</mn>
+     </mrow>
+    </msub><mo>,</mo>
+    <mi>&hellip;
+    </mi><mo>,</mo>
+    <msub>
+     <mrow><mi>p</mi>
+     </mrow>
+     <mrow><mi>m</mi>
+     </mrow>
+    </msub>
+   </mrow>
+  </mrow>
+ </mrow></math>, <math xmlns="http://www.w3.org/1998/Math/MathML">
+ <mrow>
+  <mrow>
+   <msubsup>
+    <mrow><mo> &sum; </mo>
+    </mrow>
+    <mrow>
+     <mrow><mi>i</mi><mo>=</mo><mn>1</mn>
+     </mrow>
+    </mrow>
+    <mrow><mi>m</mi>
+    </mrow>
+   </msubsup>
+   <msub>
+    <mrow><mi>p</mi>
+    </mrow>
+    <mrow><mi>i</mi>
+    </mrow>
+   </msub><mo>=</mo><mn>1</mn>
+  </mrow>
+ </mrow></math>, and <math xmlns="http://www.w3.org/1998/Math/MathML">
+ <mrow>
+  <mrow>
+   <msub>
+    <mrow><mi> &forall; </mi>
+    </mrow>
+    <mrow><mi>i</mi>
+    </mrow>
+   </msub><mo>:</mo><mspace />
+   <msub>
+    <mrow><mi>p</mi>
+    </mrow>
+    <mrow><mi>i</mi>
+    </mrow>
+   </msub><mo> &ges; </mo><mn>0</mn>
+  </mrow>
+ </mrow></math> is probability to choose the <math xmlns="http://www.w3.org/1998/Math/MathML">
+ <mrow>
+  <msup>
+   <mrow><mi>i</mi>
+   </mrow>
+   <mrow>
+    <mrow><mi>t</mi><mi>h</mi>
+    </mrow>
+   </mrow>
+  </msup>
+ </mrow></math> allocation.</li>
+</ul>
+<h3 class="subsection_" id='magicparlabel-7'>Fairness Condition</h3>
+<div class="standard" id='magicparlabel-8'>the condition that a random channel allocation scheme is "fair":</div>
+
+<div class="standard" id='magicparlabel-9'><math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+ <mrow>
+  <mrow><mi> &forall; </mi><mi>j</mi><mo> &isin; </mo><mi>V</mi><mo>:</mo><mspace width="10px" />
+   <munder>
+    <mrow><mo> &sum; </mo>
+    </mrow>
+    <mrow>
+     <mrow><mi>i</mi><mo>:</mo><mspace width="6px" /><mi>j</mi><mo> &isin; </mo>
+      <msub>
+       <mrow><mi>s</mi>
+       </mrow>
+       <mrow><mi>i</mi>
+       </mrow>
+      </msub>
+     </mrow>
+    </mrow>
+   </munder>
+   <msub>
+    <mrow><mi>p</mi>
+    </mrow>
+    <mrow><mi>i</mi>
+    </mrow>
+   </msub><mo>=</mo>
+   <mfrac>
+    <mrow><mn>1</mn>
+    </mrow>
+    <mrow><mo form='prefix' fence='true' stretchy='true' symmetric='true'>|</mo>
+<mi>V</mi>
+<mo form='postfix' fence='true' stretchy='true' symmetric='true'>|</mo>
+
+    </mrow>
+   </mfrac>
+  </mrow>
+ </mrow></math></div>
+
+<div class="standard" id='magicparlabel-10'><math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+ <mrow>
+  <mrow>
+   <munderover>
+    <mrow><mo> &sum; </mo>
+    </mrow>
+    <mrow>
+     <mrow><mi>i</mi><mo>=</mo><mn>1</mn>
+     </mrow>
+    </mrow>
+    <mrow><mi>m</mi>
+    </mrow>
+   </munderover>
+   <msub>
+    <mrow><mi>p</mi>
+    </mrow>
+    <mrow><mi>i</mi>
+    </mrow>
+   </msub><mo>=</mo><mn>1</mn>
+  </mrow>
+ </mrow></math></div>
+
+<div class="standard" id='magicparlabel-11'>We can see this is a linear system for <math xmlns="http://www.w3.org/1998/Math/MathML">
+ <mrow>
+  <mrow>{
+   <msub>
+    <mrow><mi>p</mi>
+    </mrow>
+    <mrow><mn>1</mn>
+    </mrow>
+   </msub><mo>,</mo>
+   <msub>
+    <mrow><mi>p</mi>
+    </mrow>
+    <mrow><mn>2</mn>
+    </mrow>
+   </msub><mo>,</mo>
+   <mi>&hellip;
+   </mi><mo>,</mo>
+   <msub>
+    <mrow><mi>p</mi>
+    </mrow>
+    <mrow><mi>m</mi>
+    </mrow>
+   </msub>}
+  </mrow>
+ </mrow></math>with <math xmlns="http://www.w3.org/1998/Math/MathML">
+ <mrow>
+  <mrow><mo form='prefix' fence='true' stretchy='true' symmetric='true'>|</mo>
+<mi>V</mi>
+<mo form='postfix' fence='true' stretchy='true' symmetric='true'>|</mo>
+<mo>+</mo><mn>1</mn>
+  </mrow>
+ </mrow></math> equations and m variables (<math xmlns="http://www.w3.org/1998/Math/MathML">
+ <mrow>
+  <mrow>
+   <mrow>
+    <msub>
+     <mrow><mi>p</mi>
+     </mrow>
+     <mrow><mn>1</mn>
+     </mrow>
+    </msub><mo>,</mo>
+    <msub>
+     <mrow><mi>p</mi>
+     </mrow>
+     <mrow><mn>2</mn>
+     </mrow>
+    </msub><mo>,</mo>
+    <mi>&hellip;
+    </mi><mo>,</mo>
+    <msub>
+     <mrow><mi>p</mi>
+     </mrow>
+     <mrow><mi>m</mi>
+     </mrow>
+    </msub>
+   </mrow>
+  </mrow>
+ </mrow></math>). Depending on the interference graph, the linear system either:</div>
+
+<ol class="enumerate" id='magicparlabel-12'><li class="enumerate_item">Has no non-negative solution of <math xmlns="http://www.w3.org/1998/Math/MathML">
+ <mrow>
+  <mrow>{
+   <msub>
+    <mrow><mi>p</mi>
+    </mrow>
+    <mrow><mn>1</mn>
+    </mrow>
+   </msub><mo>,</mo>
+   <msub>
+    <mrow><mi>p</mi>
+    </mrow>
+    <mrow><mn>2</mn>
+    </mrow>
+   </msub><mo>,</mo>
+   <mi>&hellip;
+   </mi><mo>,</mo>
+   <msub>
+    <mrow><mi>p</mi>
+    </mrow>
+    <mrow><mi>m</mi>
+    </mrow>
+   </msub>}
+  </mrow>
+ </mrow></math>. 
+<br />
+
+This happens in two cases: 
+<br />
+
+(1) Has no solution of <math xmlns="http://www.w3.org/1998/Math/MathML">
+ <mrow>
+  <mrow>{
+   <msub>
+    <mrow><mi>p</mi>
+    </mrow>
+    <mrow><mn>1</mn>
+    </mrow>
+   </msub><mo>,</mo>
+   <msub>
+    <mrow><mi>p</mi>
+    </mrow>
+    <mrow><mn>2</mn>
+    </mrow>
+   </msub><mo>,</mo>
+   <mi>&hellip;
+   </mi><mo>,</mo>
+   <msub>
+    <mrow><mi>p</mi>
+    </mrow>
+    <mrow><mi>m</mi>
+    </mrow>
+   </msub>}
+  </mrow>
+ </mrow></math>
+<br />
+
+(2) Has real number solution of <math xmlns="http://www.w3.org/1998/Math/MathML">
+ <mrow>
+  <mrow>{
+   <msub>
+    <mrow><mi>p</mi>
+    </mrow>
+    <mrow><mn>1</mn>
+    </mrow>
+   </msub><mo>,</mo>
+   <msub>
+    <mrow><mi>p</mi>
+    </mrow>
+    <mrow><mn>2</mn>
+    </mrow>
+   </msub><mo>,</mo>
+   <mi>&hellip;
+   </mi><mo>,</mo>
+   <msub>
+    <mrow><mi>p</mi>
+    </mrow>
+    <mrow><mi>m</mi>
+    </mrow>
+   </msub>}
+  </mrow>
+ </mrow></math>, but at least one of <math xmlns="http://www.w3.org/1998/Math/MathML">
+ <mrow>
+  <mrow>{
+   <msub>
+    <mrow><mi>p</mi>
+    </mrow>
+    <mrow><mn>1</mn>
+    </mrow>
+   </msub><mo>,</mo>
+   <msub>
+    <mrow><mi>p</mi>
+    </mrow>
+    <mrow><mn>2</mn>
+    </mrow>
+   </msub><mo>,</mo>
+   <mi>&hellip;
+   </mi><mo>,</mo>
+   <msub>
+    <mrow><mi>p</mi>
+    </mrow>
+    <mrow><mi>m</mi>
+    </mrow>
+   </msub>}
+  </mrow>
+ </mrow></math> is negative.</li>
+<li class="enumerate_item">Has only one non-negative solution of <math xmlns="http://www.w3.org/1998/Math/MathML">
+ <mrow>
+  <mrow>{
+   <msub>
+    <mrow><mi>p</mi>
+    </mrow>
+    <mrow><mn>1</mn>
+    </mrow>
+   </msub><mo>,</mo>
+   <msub>
+    <mrow><mi>p</mi>
+    </mrow>
+    <mrow><mn>2</mn>
+    </mrow>
+   </msub><mo>,</mo>
+   <mi>&hellip;
+   </mi><mo>,</mo>
+   <msub>
+    <mrow><mi>p</mi>
+    </mrow>
+    <mrow><mi>m</mi>
+    </mrow>
+   </msub>}
+  </mrow>
+ </mrow></math>.</li>
+<li class="enumerate_item">Has infinitely many solutions of <math xmlns="http://www.w3.org/1998/Math/MathML">
+ <mrow>
+  <mrow>{
+   <msub>
+    <mrow><mi>p</mi>
+    </mrow>
+    <mrow><mn>1</mn>
+    </mrow>
+   </msub><mo>,</mo>
+   <msub>
+    <mrow><mi>p</mi>
+    </mrow>
+    <mrow><mn>2</mn>
+    </mrow>
+   </msub><mo>,</mo>
+   <mi>&hellip;
+   </mi><mo>,</mo>
+   <msub>
+    <mrow><mi>p</mi>
+    </mrow>
+    <mrow><mi>m</mi>
+    </mrow>
+   </msub>}
+  </mrow>
+ </mrow></math>.</li>
+</ol>
+<div class="standard" id='magicparlabel-15'>A standard linear systems solver can easily decide which case applies from those 3, given the equations.</div>
+<h3 class="subsection_" id='magicparlabel-16'>Fair allocations usually don't maximize throughput</h3>
+<div class="standard" id='magicparlabel-17'>The highest throughput is acquired by always allocating the channel to the largest MaxIS.</div>
+
+<div class="standard" id='magicparlabel-18'>Thus, except uncommon cases like fully connected or null interference graph, or a graph with high symmetry among nodes, fair allocations don't maximize throughput. </div>
+</body>
+</html>
+
+  </div><a class="u-url" href="/on_fairness_of_channel_allocation_contention_schemes.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">the dogs man (under construction)</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Ligon Liu</li><li><a class="u-email" href="mailto:ligonliu1@gmail.com">ligonliu1@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/ligonliu"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">ligonliu</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>personal blog on self replication, digital twin, simulation, database, offgrid, sustainability etc</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
