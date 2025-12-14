@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>The Declarative Data Warehouse | tech notes</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="The Declarative Data Warehouse" />
+<meta name="author" content="Ligon Liu" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="stateless architecture address development and operation challenges" />
+<meta property="og:description" content="stateless architecture address development and operation challenges" />
+<link rel="canonical" href="https://ligonliu.github.io/declarative_data_warehouse.html" />
+<meta property="og:url" content="https://ligonliu.github.io/declarative_data_warehouse.html" />
+<meta property="og:site_name" content="tech notes" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-10-24T10:45:00-07:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="The Declarative Data Warehouse" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Ligon Liu"},"dateModified":"2025-10-24T10:45:00-07:00","datePublished":"2025-10-24T10:45:00-07:00","description":"stateless architecture address development and operation challenges","headline":"The Declarative Data Warehouse","mainEntityOfPage":{"@type":"WebPage","@id":"https://ligonliu.github.io/declarative_data_warehouse.html"},"url":"https://ligonliu.github.io/declarative_data_warehouse.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://ligonliu.github.io/feed.xml" title="tech notes" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">tech notes</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="manifest" href="/images/site.webmanifest">
+<link rel="shortcut icon" href="/images/favicon.ico">
+
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">The Declarative Data Warehouse</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2025-10-24T10:45:00-07:00" itemprop="datePublished"></time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>stateless architecture address development and operation challenges</p>
+
+<hr />
+
+<h1 id="part-1-escaping-state-management-hell--the-case-for-the-stateless-data-warehouse">Part 1: Escaping State Management Hell – The Case for the Stateless Data Warehouse</h1>
+
+<p>In the traditional data warehousing paradigm, we often treat our data platforms like pets. We nurture them, manually feed them updates, and panic when they get sick. We’ve built massive monoliths where the “state” of the data—the tables in our Silver and Gold layers—is a precious, fragile artifact maintained by a complex sequence of <code class="language-plaintext highlighter-rouge">UPDATE</code>, <code class="language-plaintext highlighter-rouge">DELETE</code>, and <code class="language-plaintext highlighter-rouge">MERGE</code> statements.</p>
+
+<p>If you are a Data Architect today, you know this model is breaking. We are facing a crisis of cost, complexity, and maintainability. Today, I want to propose a paradigm shift: <strong>The Stateless Data Warehouse</strong>.</p>
+
+<h3 id="the-challenges">The Challenges</h3>
+
+<p>Before we discuss the solution, let’s dissect why the traditional “stateful” approach is failing us in the modern big data era.</p>
+
+<p><strong>1. The Compute vs. Storage Asymmetry</strong></p>
+
+<p>Historically, storage was expensive, so we optimized for storage efficiency (normalization). Today, storage is dirt cheap (S3, ADLS), but <em>compute</em> is relatively expensive. We need the ability to store vast amounts of history cheaply in a Data Lake, while spinning up high-performance compute clusters only when we need to transform the data.</p>
+
+<p><strong>2. The “State Management Hell”</strong></p>
+
+<p>This is the most painful operational reality. In a traditional warehouse, the current state of a table is the result of years of cumulative DML operations.</p>
+
+<ul>
+  <li>
+    <p><em>Scenario:</em> A bug is found in the logic for calculating “Monthly Active Users” (MAU) introduced six months ago.</p>
+  </li>
+  <li>
+    <p><em>The Fix:</em> You can’t just push a code fix. You have to write a complex “one-off” script to <code class="language-plaintext highlighter-rouge">UPDATE</code> historical rows, or worse, drop the table and reload it manually, hoping you restore the data in the correct order of dependencies.</p>
+  </li>
+  <li>
+    <p><em>The Result:</em> The database state diverges from the code. Data in production is rarely exactly what is in your git repo.</p>
+  </li>
+</ul>
+
+<p><strong>3. The CI/CD Nightmare</strong></p>
+
+<p>Because the data has no “version control,” continuous integration is nearly impossible. You cannot easily “branch” a multi-terabyte data warehouse to test a change. Engineers are forced to test on small, unrepresentative subsets, leading to risk of production failures. We have mastered DevOps for applications, but DataOps remains stuck in the dark ages.</p>
+
+<h3 id="the-solution-the-stateless-data-warehouse">The Solution: The Stateless Data Warehouse</h3>
+
+<p>We need to treat data transformation logic the same way software engineers treat application code: <strong>Declarative</strong>.</p>
+
+<p>A <strong>Stateless Data Warehouse</strong> is defined by a simple equation:</p>
+
+<p>Target Data = F(Source Data), where F is a pure function</p>
+
+<p>In this architecture:</p>
+
+<ol>
+  <li><strong>Source Data (Bronze)</strong> is the only true “State”. It is an 1:1 clone of source database exactly without transformation. It is only updated by ingestion process and immutable from the transformation code.</li>
+  <li><strong>Transformation Code</strong> lives entirely in a version-controlled repository (Git).</li>
+  <li><strong>The Warehouse (Silver/Gold)</strong> is effectively a <em>cache</em>. It is a derived view of the source, often materialized for performance.</li>
+</ol>
+
+<p>If I delete my entire Gold layer today, I should be able to run a single command (e.g., <code class="language-plaintext highlighter-rouge">dbt run</code>) to rebuild it exactly as it was, using only the Source Data and the Code. The warehouse layers are <strong>ephemeral</strong>.</p>
+
+<h3 id="the-advantages-of-going-stateless">The Advantages of Going Stateless</h3>
+
+<p><strong>1. Time Travel and Reproducibility</strong></p>
+
+<p>If your code is versioned in Git and your bronze layer supports time travel (e.g. delta lake/iceberg), you can reproduce the state of the warehouse at any point in time. Need to see what the numbers looked like last month before the logic change? Checkout the old Git commit and run the pipeline.</p>
+
+<p><strong>2. Zero-Fear Refactoring</strong>
+When the data warehouse is just a function of code, refactoring becomes safe. You can change a fundamental business logic definition, and the system handles the rest. If the transformation is complex, you simply re-materialize the table from the immutable history. You stop writing “migration scripts” and start writing “transformation definitions.”</p>
+
+<p><strong>3. Idempotency</strong>
+Stateless pipelines are naturally idempotent. Running the pipeline once or ten times produces the same result. This eliminates the frantic late-night debugging sessions caused by accidental double-loading of data.</p>
+
+<h3 id="the-cicd-process-for-a-stateless-warehouse">The CI/CD Process for a Stateless Warehouse</h3>
+
+<p>In this architecture, the CI/CD pipeline is the heartbeat of the system. Here is how a mature workflow looks:</p>
+
+<ol>
+  <li><strong>Feature Branch Development:</strong>
+An engineer creates a branch <code class="language-plaintext highlighter-rouge">feature/new-kpi</code>. They modify the SQL transformation code.</li>
+  <li><strong>The “Slim” CI Build:</strong>
+When the Pull Request (PR) is opened, the CI server triggers. It does not run against the full 100TB production dataset. Instead, it spins up a temporary, isolated schema (e.g., <code class="language-plaintext highlighter-rouge">pr_1024_schema</code>) and runs the new transformations against a <em>sample</em> of the source data or a mock dataset.</li>
+  <li><strong>Automated Testing:</strong>
+The pipeline runs data quality tests (uniqueness, referential integrity, null checks) against this temporary schema. If <code class="language-plaintext highlighter-rouge">count(distinct id) != count(*)</code>, the build fails.</li>
+  <li><strong>Merge and Deploy:</strong>
+Once merged to <code class="language-plaintext highlighter-rouge">main</code>, the CD pipeline kicks in. It updates the production code definitions.</li>
+  <li><strong>Incremental Materialization (The Magic Sauce):</strong>
+This is where the “System-Managed Caching” comes in. The system (using tools like dbt or Delta Live Tables) analyzes the code change.
+    <ul>
+      <li><em>No Logic Change?</em> Do nothing.</li>
+      <li><em>Logic Change?</em> It determines if it can apply the change incrementally or if it needs to trigger a full refresh of that specific table.</li>
+      <li><em>New Data?</em> It runs the <code class="language-plaintext highlighter-rouge">F(New Data)</code> function and merges it into the existing materialized view.</li>
+    </ul>
+  </li>
+</ol>
+
+<p>By transparently decoupling the definition of data from the storage of data, we gain agility. We stop being janitors of database state and start being architects of data logic.</p>
+
+<h1 id="part-2-the-art-of-the-handoff--replicating-transactional-data-to-the-lake">Part 2: The Art of the Handoff – Replicating Transactional Data to the Lake</h1>
+
+<p>The foundation of a modern, stateless data warehouse is an immutable “Bronze” layer—a perfect copy of source history. But how do we get data from a high-velocity transactional system (OLTP) into our analytical lake (OLAP) without bringing production to its knees?</p>
+
+<p>Let’s critique the methodologies, ranging from the archaic to the cutting-edge.</p>
+
+<h3 id="the-traditionalists-transactional-dumps-and-incremental-pulling">The Traditionalists: Transactional Dumps and Incremental Pulling</h3>
+
+<p><strong>Transactional Dumps (The “Snapshot”)</strong>
+This is the brute-force approach. Every night, a script executes <code class="language-plaintext highlighter-rouge">SELECT *</code> on the source tables and dumps them to CSV or Parquet.</p>
+
+<p>It works for small tables, but it’s a non-starter for big data. It puts heavy read pressure on the production DB and offers no history of <em>intermediate</em> changes between snapshots.</p>
+
+<p><strong>Incremental Pulling (The “High-Water Mark”)</strong></p>
+
+<p>Here, we query rows where <code class="language-plaintext highlighter-rouge">updated_at &gt; last_extraction_time</code>.</p>
+
+<p>This approach is fragile. It relies on developers correctly updating the <code class="language-plaintext highlighter-rouge">updated_at</code> column. Crucially, it <strong>cannot detect hard deletes</strong>. If a row is deleted in Source, the Data Lake will never know, leading to permanent data drift.</p>
+
+<h3 id="the-buffer-strategy-native-replication">The Buffer Strategy: Native Replication</h3>
+
+<p>A robust middle-ground is using the RDBMS’s native replication capabilities (e.g., Postgres Streaming Replication or MySQL Binlog replication) to create a <strong>Read Replica</strong>.</p>
+
+<p>In this architecture, you do not extract from the Primary database. You replicate the entire database state to a secondary server dedicated to analytics extraction.</p>
+
+<ol>
+  <li><strong>Primary DB:</strong> Handles application traffic.</li>
+  <li><strong>Native Replication:</strong> Physically replicates WAL (Write Ahead Logs) to the Replica.</li>
+  <li><strong>Replica DB:</strong> The ELT process queries <em>this</em> server to perform snapshots or incremental pulls.</li>
+</ol>
+
+<p>This isolates the analytical load from the application users. However, it still suffers from the “Snapshot” limitations—it gives you the state <em>now</em>, not the stream of <em>what happened</em>.</p>
+
+<h3 id="the-gold-standard-change-data-capture-cdc">The Gold Standard: Change Data Capture (CDC)</h3>
+
+<p>To achieve true statelessness for time travel, we need the <em>log</em> of actions, not just the final state. We need CDC. CDC captures the <code class="language-plaintext highlighter-rouge">INSERT</code>, <code class="language-plaintext highlighter-rouge">UPDATE</code>, and <code class="language-plaintext highlighter-rouge">DELETE</code> events directly from the database transaction logs.</p>
+
+<p>Let’s look at the technical details of the leading players in this space.</p>
+
+<h4 id="1-debezium-the-open-source-champion">1. Debezium (The Open Source Champion)</h4>
+
+<p>Debezium is built on top of Apache Kafka. It acts as a connector that sits inside Kafka Connect.</p>
+
+<ul>
+  <li><em>Mechanism:</em> It poses as a slave node to the database, reading the binary log (MySQL) or decoding the Write Ahead Log (Postgres via <code class="language-plaintext highlighter-rouge">pgoutput</code> plugin).</li>
+  <li><em>Output:</em> It produces a stream of JSON/Avro messages to Kafka topics. Each message contains the <code class="language-plaintext highlighter-rouge">before</code> state and the <code class="language-plaintext highlighter-rouge">after</code> state of the row.</li>
+  <li><em>Pros:</em> Extremely low latency; captures deletions; open-source standard.</li>
+  <li><em>Cons:</em> Requires managing a Kafka/Zookeeper cluster, which is high operational overhead.</li>
+</ul>
+
+<h4 id="2-flink-cdc">2. Flink CDC</h4>
+
+<p>Flink CDC simplifies the Debezium architecture. Instead of requiring a separate Kafka Connect cluster, Flink CDC connectors embed the Debezium engine directly into the Flink worker.</p>
+
+<ul>
+  <li>
+    <p><em>Mechanism:</em> It reads the snapshot of the database (for history) and then seamlessly switches to reading the logs (for incremental updates) within a single Flink job.</p>
+  </li>
+  <li>
+    <p><em>Pros:</em> No Kafka dependency; seamless handling of the “initial load” vs. “incremental stream” transition; powerful transformation capabilities in-flight.</p>
+  </li>
+</ul>
+
+<h4 id="3-aws-dms-database-migration-service">3. AWS DMS (Database Migration Service)</h4>
+
+<ul>
+  <li><em>Mechanism:</em> An agentless managed service. It spins up a replication instance that reads source logs and writes to targets (e.g. S3).</li>
+  <li><em>Pros:</em> Easy to set up; serverless-ish.</li>
+</ul>
+
+<h4 id="4-google-cloud-datastream">4. Google Cloud Datastream</h4>
+
+<ul>
+  <li><em>Mechanism:</em> A serverless CDC offering that integrates tightly with BigQuery and Google Cloud Storage.</li>
+  <li><em>Pros:</em> truly serverless (no instances to manage); handles schema drift reasonably well; native integration makes loading BigQuery near real-time.</li>
+</ul>
+
+<h4 id="5-databricks-auto-loader">5. Databricks Auto Loader</h4>
+
+<p>Databricks approaches CDC by focusing on the <em>ingestion</em> of the files produced by tools like DMS or Debezium.</p>
+
+<ul>
+  <li><em>Auto Loader (<code class="language-plaintext highlighter-rouge">cloudFiles</code>):</em> It sets up event notifications (SNS/SQS) on the S3 bucket. As soon as a CDC tool drops a file, Auto Loader ingests it. It handles <strong>Schema Evolution</strong> gracefully—if the source adds a column, Auto Loader updates the Delta table schema automatically without crashing the pipeline.</li>
+</ul>
+
+<hr />
+
+<h1 id="part-3-the-engine-room--implementing-incremental-materialization">Part 3: The Engine Room – Implementing Incremental Materialization</h1>
+
+<p>We have our our Stateless philosophy (Part 1) and immutable Bronze data ingestion (Part 2).</p>
+
+<p>Now, the rubber meets the road. How do we write the transform code?</p>
+
+<p>If the data is small, or the transform is fast, we can use just <code class="language-plaintext highlighter-rouge">VIEW</code>. The code consists only <code class="language-plaintext highlighter-rouge">CREATE VIEW</code> statements. Every git branch triggers creation of a first level namespace (e.g. <code class="language-plaintext highlighter-rouge">DATABASE</code> in SQL Server or Postgres). For a specific git branch, all views can be created under the branch’s first level namespace. A script will run all view creation statements in order of dependency.</p>
+
+<p>The key to performance in a stateless architecture is <strong>Incremental Materialization</strong>. We want to define our transformations as if we are processing the whole dataset (<code class="language-plaintext highlighter-rouge">SELECT *</code>), but we want the engine to execute only on the <em>changes</em>.</p>
+
+<p>Here is how to achieve this across three popular ecosystems: dbt, Spark, and Hive.</p>
+
+<h3 id="1-incremental-materialization-with-dbt-core">1. Incremental Materialization with dbt Core</h3>
+
+<p>dbt (data build tool) is the standard for SQL-based transformation. It allows you to write templated SQL that compiles into different DML statements depending on the run context.</p>
+
+<p>In dbt, you define a model as <code class="language-plaintext highlighter-rouge">incremental</code>. On the first run, it builds the table. On subsequent runs, it uses Jinja logic to filter for new data and merge it.</p>
+
+<p><strong>The Strategy:</strong>
+We use the <code class="language-plaintext highlighter-rouge">unique_key</code> config to perform an “Upsert” (Merge). We filter input data using the <code class="language-plaintext highlighter-rouge">is_incremental()</code> macro to ensure we only scan recent source data.</p>
+
+<p><strong>Sample Code (<code class="language-plaintext highlighter-rouge">models/gold/dim_users.sql</code>):</strong></p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+
+<span class="k">SELECT</span>
+    <span class="n">user_id</span><span class="p">,</span>
+    <span class="n">email</span><span class="p">,</span>
+    <span class="n">last_login</span><span class="p">,</span>
+    <span class="c1">-- Simple transformation logic</span>
+    <span class="k">upper</span><span class="p">(</span><span class="n">status</span><span class="p">)</span> <span class="k">as</span> <span class="n">status</span><span class="p">,</span>
+    <span class="n">updated_at</span>
+<span class="k">FROM</span> 
+
+<span class="c1">-- The "Incremental Filter"</span>
+
+
+</code></pre></div></div>
+
+<p><strong>Why this rocks:</strong> You write standard SQL. dbt handles the complex <code class="language-plaintext highlighter-rouge">MERGE INTO target USING source ON ...</code> logic specific to your warehouse (Snowflake, BigQuery, Postgres, or Databricks).</p>
+
+<h3 id="2-incremental-materialization-with-apache-spark-delta-lake">2. Incremental Materialization with Apache Spark (Delta Lake)</h3>
+
+<p>In Spark 4.0 and the modern Lakehouse, we move away from manual “High Watermark” management towards <strong>Structured Streaming</strong> and <strong>Delta Live Tables</strong>.</p>
+
+<p>Here, we define the “View” as a continuously running stream (or triggered stream) that maintains state (aggregation) automatically.</p>
+
+<p><strong>The Strategy:</strong>
+We treat the data as a stream. We use <code class="language-plaintext highlighter-rouge">checkpointLocation</code> to let Spark remember exactly which offsets it has processed. We use <code class="language-plaintext highlighter-rouge">trigger(availableNow=True)</code> to run it as a batch job that processes all <em>new</em> data since the last run and then shuts down (saving costs).</p>
+
+<p><strong>Sample Code (PySpark):</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Define the source (Bronze)
+# 'ignoreChanges' allows us to read from Delta tables even if files were rewritten
+</span><span class="n">bronze_df</span> <span class="o">=</span> <span class="n">spark</span><span class="p">.</span><span class="n">readStream</span> \
+    <span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="sh">"</span><span class="s">delta</span><span class="sh">"</span><span class="p">)</span> \
+    <span class="p">.</span><span class="nf">option</span><span class="p">(</span><span class="sh">"</span><span class="s">ignoreChanges</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">true</span><span class="sh">"</span><span class="p">)</span> \
+    <span class="p">.</span><span class="nf">load</span><span class="p">(</span><span class="sh">"</span><span class="s">/mnt/datalake/bronze/events</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># Define the Transformation (The "View" Logic)
+# Spark maintains the 'state' of the count in the checkpoint
+</span><span class="n">gold_counts</span> <span class="o">=</span> <span class="n">bronze_df</span> \
+    <span class="p">.</span><span class="nf">withWatermark</span><span class="p">(</span><span class="sh">"</span><span class="s">event_time</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">10 minutes</span><span class="sh">"</span><span class="p">)</span> \
+    <span class="p">.</span><span class="nf">groupBy</span><span class="p">(</span><span class="sh">"</span><span class="s">user_id</span><span class="sh">"</span><span class="p">)</span> \
+    <span class="p">.</span><span class="nf">count</span><span class="p">()</span>
+
+<span class="c1"># Materialize incrementally
+</span><span class="n">query</span> <span class="o">=</span> <span class="n">gold_counts</span><span class="p">.</span><span class="n">writeStream</span> \
+    <span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="sh">"</span><span class="s">delta</span><span class="sh">"</span><span class="p">)</span> \
+    <span class="p">.</span><span class="nf">outputMode</span><span class="p">(</span><span class="sh">"</span><span class="s">update</span><span class="sh">"</span><span class="p">)</span> \
+    <span class="p">.</span><span class="nf">option</span><span class="p">(</span><span class="sh">"</span><span class="s">checkpointLocation</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">/mnt/checkpoints/gold_user_counts</span><span class="sh">"</span><span class="p">)</span> \
+    <span class="p">.</span><span class="nf">trigger</span><span class="p">(</span><span class="n">availableNow</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span> \
+    <span class="p">.</span><span class="nf">toTable</span><span class="p">(</span><span class="sh">"</span><span class="s">gold.user_event_counts</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="n">query</span><span class="p">.</span><span class="nf">awaitTermination</span><span class="p">()</span>
+
+</code></pre></div></div>
+
+<p>This script is idempotent. You can run it every hour by a scheduler. It will wake up, look at the checkpoint, process only the new Bronze data, update the Gold table, and exit.</p>
+
+<h3 id="3-incremental-materialization-with-apache-hive">3. Incremental Materialization with Apache Hive</h3>
+
+<p>Hive is traditionally rigid, but modern Hive (3.x+) introduced ACID tables and native Materialized Views with intelligent rewriting and incremental rebuilding capabilities.</p>
+
+<p><strong>The Strategy:</strong>
+We use Hive’s <code class="language-plaintext highlighter-rouge">CREATE MATERIALIZED VIEW</code> syntax. The key is enabling transactional (ACID) properties on the underlying tables so Hive can track changes.</p>
+
+<p><strong>Sample Code (HiveQL):</strong></p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">-- 1. Ensure Source Table is ACID compliant to track changes</span>
+<span class="k">ALTER</span> <span class="k">TABLE</span> <span class="n">bronze_sales</span> <span class="k">SET</span> <span class="n">TBLPROPERTIES</span> <span class="p">(</span><span class="s1">'transactional'</span><span class="o">=</span><span class="s1">'true'</span><span class="p">);</span>
+
+<span class="c1">-- 2. Define the Materialized View</span>
+<span class="c1">-- Hive creates a physical table to store these results</span>
+<span class="k">CREATE</span> <span class="n">MATERIALIZED</span> <span class="k">VIEW</span> <span class="n">gold_daily_sales</span>
+<span class="n">STORED</span> <span class="k">AS</span> <span class="n">ORC</span>
+<span class="n">TBLPROPERTIES</span> <span class="p">(</span><span class="s1">'transactional'</span><span class="o">=</span><span class="s1">'true'</span><span class="p">)</span>
+<span class="k">AS</span>
+<span class="k">SELECT</span>
+    <span class="n">product_id</span><span class="p">,</span>
+    <span class="k">cast</span><span class="p">(</span><span class="n">sale_date</span> <span class="k">as</span> <span class="nb">DATE</span><span class="p">)</span> <span class="k">as</span> <span class="n">sale_day</span><span class="p">,</span>
+    <span class="k">sum</span><span class="p">(</span><span class="n">amount</span><span class="p">)</span> <span class="k">as</span> <span class="n">total_revenue</span>
+<span class="k">FROM</span> <span class="n">bronze_sales</span>
+<span class="k">GROUP</span> <span class="k">BY</span> <span class="n">product_id</span><span class="p">,</span> <span class="k">cast</span><span class="p">(</span><span class="n">sale_date</span> <span class="k">as</span> <span class="nb">DATE</span><span class="p">);</span>
+
+<span class="c1">-- 3. The Incremental Refresh Operation</span>
+<span class="c1">-- When this command runs, Hive checks the transaction logs of bronze_sales.</span>
+<span class="c1">-- If possible, it performs an incremental update.</span>
+<span class="c1">-- If the changes are too complex, it falls back to full rebuild automatically.</span>
+<span class="k">ALTER</span> <span class="n">MATERIALIZED</span> <span class="k">VIEW</span> <span class="n">gold_daily_sales</span> <span class="n">REBUILD</span><span class="p">;</span>
+
+</code></pre></div></div>
+
+<p><strong>Architect’s Note:</strong> While Hive supports this, the industry is moving toward Spark/Delta or Iceberg for this functionality due to the “managed” nature of state in Hive being harder to debug when things go wrong.</p>
+
+  </div><a class="u-url" href="/declarative_data_warehouse.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">tech notes</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Ligon Liu</li><li><a class="u-email" href="mailto:ligonliu1@gmail.com">ligonliu1@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/ligonliu"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">ligonliu</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>personal blog on self replication, digital twin, simulation, database, offgrid, sustainability etc</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
