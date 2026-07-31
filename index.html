@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>tech notes | personal blog on self replication, digital twin, simulation, database, offgrid, sustainability etc</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="tech notes" />
+<meta name="author" content="Ligon Liu" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="personal blog on self replication, digital twin, simulation, database, offgrid, sustainability etc" />
+<meta property="og:description" content="personal blog on self replication, digital twin, simulation, database, offgrid, sustainability etc" />
+<link rel="canonical" href="https://ligonliu.github.io/" />
+<meta property="og:url" content="https://ligonliu.github.io/" />
+<meta property="og:site_name" content="tech notes" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="tech notes" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","author":{"@type":"Person","name":"Ligon Liu"},"description":"personal blog on self replication, digital twin, simulation, database, offgrid, sustainability etc","headline":"tech notes","name":"tech notes","url":"https://ligonliu.github.io/"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://ligonliu.github.io/feed.xml" title="tech notes" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">tech notes</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="home">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="manifest" href="/images/site.webmanifest">
+<link rel="shortcut icon" href="/images/favicon.ico">
+
+
+<h2 class="post-list-heading">table of contents</h2>
+	<ul class="post-list">
+	
+	  <li><h3 name="Python">Python</a>
+	    <ul>
+	    
+	      <li><a href="/Python_profiling_and_performance_optimization_for_customized_code.html">Python profiling and performance optimization by foreign calls</a></li>
+	      <p>Explains my practices and concerns in optimizing the performance of python code.</p>
+
+	    
+	      <li><a href="/example_minimum_effort.html">Python profiling and performance optimization example: a dijkstra-like algorithm</a></li>
+	      toy example of python performance diagnosis, profile and optimization
+	    
+	      <li><a href="/python_swi_prolog.html">Calling SWI-prolog for constraint programming(and other CLIs) from Python with subprocess and pexpect</a></li>
+	      example of code generation, calling external command, and pexpect interface with command line interface in python
+	    
+	    </ul>
+	  </li>
+	
+	  <li><h3 name="Wireless_Networking">Wireless_Networking</a>
+	    <ul>
+	    
+	      <li><a href="/layered_approach_to_dca.html">My two-layer approach to optimal wireless Channel Allocation problem</a></li>
+	      fractional channel, adaptive noise toleration, minimal then decreasing marginal utility
+	    
+	      <li><a href="/on_fairness_of_channel_allocation_contention_schemes.html">On fairness of wireless channel allocation/contention schemes</a></li>
+	      what does fairness mean in allocating channel to interfering nodes
+	    
+	      <li><a href="/reading_clusterhead_selection_for_wireless_adhoc_networks.html">Reading on ad-hoc cluster head selection and distributed channel allocation algorithms</a></li>
+	      brief reading note of LEACH/HEED for cluster head election, and Leith&Clifford/CFL algorithms of distributed graph coloring for channel allocation
+	    
+	    </ul>
+	  </li>
+	
+	  <li><h3 name="Database">Database</a>
+	    <ul>
+	    
+	      <li><a href="/critical_analysis_unity_catalog_fabric.html">Critical analysis of Unity Catalog vs Fabric platform architecture</a></li>
+	      <p>data architects reveals Fabric vs Unity difference as a virtual debate</p>
+
+	    
+	      <li><a href="/declarative_data_warehouse.html">The Declarative Data Warehouse</a></li>
+	      <p>stateless architecture address development and operation challenges</p>
+
+	    
+	      <li><a href="/nCharIndex_for_speeding_up_substring_queries.html">nCharIndex for speeding up SQL substring match queries</a></li>
+	      <p>index with short(2-3) substrings can greatly reduce search domain of substring matches for SQL LIKE queries, resulting in 150-300x acceleration</p>
+
+	    
+	      <li><a href="/nCharIndex_performance_experiment.html">nCharIndex performance experiment</a></li>
+	      comparison of query and build time between nCharIndex and non-indexed MySQL
+	    
+	    </ul>
+	  </li>
+	
+	  <li><h3 name="Habitation">Habitation</a>
+	    <ul>
+	    
+	      <li><a href="/modular_fridge_the_forever_box.html">Towards modular fridges: engineering, economy and policy</a></li>
+	      <p>modular fridge benefit consumers and democratize repair</p>
+
+	    
+	      <li><a href="/desert-refuge-offgrid-cool-cabin.html">Desert Refuge: design and analysis of an offgrid AC cooling cabin</a></li>
+	      <p>with low-cost, biomass material strawbale construction and renewable energy</p>
+
+	    
+	      <li><a href="/extreme_personal_climate.html">Beyond AC: technology of extreme personal climate control</a></li>
+	      <p>energy-efficient body heating/cooling in harsh environments</p>
+
+	    
+	      <li><a href="/water_to_water_heat_pump.html">Minimum water body area for water-source AC and heat pump</a></li>
+	      A few examples of minimum water body area for ACs and heat pumps that use a water body as heat/cool source.
+	    
+	    </ul>
+	  </li>
+	
+	</ul>
+
+
+    <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p></div>
+
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">tech notes</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Ligon Liu</li><li><a class="u-email" href="mailto:ligonliu1@gmail.com">ligonliu1@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/ligonliu"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">ligonliu</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>personal blog on self replication, digital twin, simulation, database, offgrid, sustainability etc</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
